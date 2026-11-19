@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keshav Arora — Data Scientist · Finance</title>
+<meta name="description" content="Keshav Arora — data scientist and analyst focused on finance. Recession forecasting, portfolio models, credit risk and alpha research. VIT Vellore.">
+<meta property="og:title" content="Keshav Arora — Data Scientist · Finance">
+<meta property="og:description" content="I turn economic and market data into models people can act on.">
+<meta property="og:image" content="assets/headshot.jpg">
+<meta name="theme-color" content="#060a12">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060a12;--card:#0d1526;--card2:#111b30;--line:#1c2840;
+  --text:#e8edf6;--muted:#94a1ba;--dim:#5d6a84;
+  --up:#2fe0a5;--down:#ff6b81;--a1:#2fe0a5;--a2:#5b8cff;--gold:#ffc46b;
+  --grad:linear-gradient(120deg,#2fe0a5,#5b8cff);
+  --r:18px;--max:1160px;
+  --sans:Inter,system-ui,sans-serif;--disp:"Space Grotesk",Inter,system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--disp);line-height:1.12;letter-spacing:-.02em}
+.mono{font-family:var(--mono)}
+.gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+section{padding:110px 0;position:relative}
+.eyebrow{font-family:var(--mono);font-size:.78rem;color:var(--a1);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.eyebrow b{color:var(--dim);font-weight:500}
+.h2{font-size:clamp(2rem,4.2vw,3rem);margin-bottom:16px}
+.sub{color:var(--muted);max-width:640px;font-size:1.05rem}
+
+/* background */
+#bg{position:fixed;inset:0;z-index:-3}
+.glow{position:fixed;border-radius:50%;filter:blur(130px);z-index:-2;pointer-events:none}
+.glow.a{width:600px;height:600px;background:#5b8cff;opacity:.13;top:-200px;right:-150px}
+.glow.b{width:560px;height:560px;background:#2fe0a5;opacity:.09;bottom:-240px;left:-200px}
+#cursor{position:fixed;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(47,224,165,.07),transparent 60%);pointer-events:none;z-index:-1;transform:translate(-50%,-50%);transition:opacity .3s}
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--grad);z-index:60;width:0}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:.3s}
+nav.s{background:rgba(6,10,18,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{font-family:var(--mono);font-weight:600;font-size:1rem;display:flex;align-items:center;gap:8px}
+.logo i{font-style:normal;color:var(--a1)}
+.links{display:flex;gap:28px;font-size:.92rem;color:var(--muted)}
+.links a{position:relative;transition:color .2s}
+.links a:hover,.links a.on{color:var(--text)}
+.links a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--grad);transition:width .25s}
+.links a:hover::after,.links a.on::after{width:100%}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:12px;font-weight:600;font-size:.95rem;transition:transform .2s,box-shadow .2s,border-color .2s;cursor:pointer;border:0}
+.btn svg{width:18px;height:18px}
+.bp{background:var(--grad);color:#04121a;box-shadow:0 12px 30px -12px rgba(47,224,165,.6)}
+.bp:hover{transform:translateY(-2px);box-shadow:0 18px 36px -12px rgba(91,140,255,.6)}
+.bg{border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text)}
+.bg:hover{border-color:var(--a1);transform:translateY(-2px)}
+.nav-cta{padding:8px 16px;font-size:.86rem}
+.burger{display:none;background:none;border:0;color:var(--text);cursor:pointer}
+.burger svg{width:28px;height:28px}
+
+/* hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:110px}
+.hero-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:60px;align-items:center}
+.status{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;font-size:.8rem;color:var(--muted);background:rgba(13,21,38,.7);margin-bottom:24px;font-family:var(--mono)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--up);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,224,165,.6)}70%{box-shadow:0 0 0 9px rgba(47,224,165,0)}100%{box-shadow:0 0 0 0 rgba(47,224,165,0)}}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:700;margin-bottom:18px}
+.hero h1 .name{display:block;font-size:.42em;font-family:var(--mono);font-weight:500;color:var(--muted);letter-spacing:0;margin-bottom:14px}
+.typed{font-family:var(--mono);font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);margin-bottom:22px}
+.typed b{color:var(--a1);font-weight:500}
+.caret{display:inline-block;width:9px;height:1.1em;background:var(--a1);margin-left:2px;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.lead{color:var(--muted);font-size:1.08rem;max-width:560px;margin-bottom:32px}
+.lead strong{color:var(--text);font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
+.socials{display:flex;gap:10px}
+.socials a{width:42px;height:42px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);transition:.2s;background:rgba(13,21,38,.6)}
+.socials a:hover{color:var(--a1);border-color:var(--a1);transform:translateY(-3px)}
+.socials svg{width:18px;height:18px}
+
+.portrait{position:relative;justify-self:center;width:min(360px,100%)}
+.frame{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:413/531;background:#fff;border:1px solid rgba(255,255,255,.08);box-shadow:0 40px 80px -30px #000}
+.frame img{width:100%;height:100%;object-fit:cover}
+.portrait::before{content:"";position:absolute;inset:-12px;border-radius:32px;background:var(--grad);opacity:.45;filter:blur(28px);z-index:-1;animation:breathe 6s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.25;transform:scale(.97)}}
+.qcard{position:absolute;background:rgba(9,15,28,.92);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-family:var(--mono);font-size:.74rem;box-shadow:0 16px 30px -12px #000;animation:float 5s ease-in-out infinite}
+.qcard .sym{color:var(--dim)}
+.qcard .val{font-family:var(--disp);font-size:1.25rem;font-weight:700;display:block;line-height:1.2}
+.qcard .chg{color:var(--up)}
+.qcard.q1{top:8%;left:-24%}
+.qcard.q2{bottom:12%;right:-20%;animation-delay:-2.5s}
+.qcard svg{display:block;margin-top:4px}
+@keyframes float{50%{transform:translateY(-10px)}}
+
+/* ticker */
+.ticker{margin-top:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(9,15,28,.7);overflow:hidden;white-space:nowrap;font-family:var(--mono);font-size:.84rem}
+.ticker-track{display:inline-flex;animation:tick 38s linear infinite;padding:13px 0}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.tk{padding:0 26px;color:var(--muted);border-right:1px solid var(--line)}
+.tk b{color:var(--text);font-weight:600;margin:0 6px}
+.tk .u{color:var(--up)}
+.tk .g{color:var(--gold)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* notebook about */
+.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:center}
+.about-photo{position:relative}
+.about-photo .ph{border-radius:22px;overflow:hidden;aspect-ratio:4/5;border:1px solid var(--line)}
+.about-photo .ph img{width:100%;height:100%;object-fit:cover;transform:scale(1.55);transform-origin:50% 72%;transition:transform .8s}
+.about-photo:hover .ph img{transform:scale(1.62)}
+.about-photo .cap{position:absolute;left:16px;bottom:16px;right:16px;background:rgba(6,10,18,.82);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+.about-photo .cap b{color:var(--text)}
+.story p{color:var(--muted);font-size:1.05rem;margin-bottom:16px}
+.story p strong{color:var(--text)}
+.nb{margin-top:30px;background:#0a1120;border:1px solid var(--line);border-radius:16px;overflow:hidden;font-family:var(--mono);font-size:.86rem}
+.nb-top{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line);background:#0c1424;color:var(--dim);font-size:.75rem}
+.nb-top i{width:10px;height:10px;border-radius:50%;background:#2a3550}
+.nb-top i:nth-child(1){background:#ff6b81}.nb-top i:nth-child(2){background:#ffc46b}.nb-top i:nth-child(3){background:#2fe0a5}
+.nb-top span{margin-left:8px}
+.cell{display:grid;grid-template-columns:62px 1fr;padding:12px 14px 4px}
+.cell .p{color:var(--a2)}
+.cell .p.o{color:var(--down)}
+.cell code{color:var(--text);white-space:pre-wrap}
+.cell code .k{color:#c792ea}.cell code .s{color:var(--up)}.cell code .f{color:var(--a2)}
+.tbl{width:100%;border-collapse:collapse;margin:4px 0 10px}
+.tbl td{padding:6px 10px;border-bottom:1px solid #16213a;vertical-align:top}
+.tbl td:first-child{color:var(--dim);width:150px}
+.tbl tr:last-child td{border-bottom:0}
+
+/* experience */
+.xp{margin-top:50px;display:grid;gap:18px}
+.job{display:grid;grid-template-columns:190px 1fr;gap:28px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;transition:.25s}
+.job:hover{border-color:#2b3c63;transform:translateY(-3px)}
+.job .when{font-family:var(--mono);font-size:.8rem;color:var(--dim)}
+.job .when b{display:block;color:var(--a1);font-weight:500;margin-bottom:6px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+.job h3{font-size:1.2rem}
+.job .org{color:var(--muted);font-size:.93rem;margin-bottom:10px}
+.job p{color:var(--muted)}
+.job .hl{display:inline-flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.kpi{font-family:var(--mono);font-size:.75rem;padding:4px 10px;border-radius:8px;background:rgba(47,224,165,.08);color:var(--up);border:1px solid rgba(47,224,165,.2)}
+
+/* chart lab */
+.lab{margin-top:44px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px}
+.lab-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+.lab-head h3{font-size:1.35rem}
+.lab-head p{color:var(--muted);font-size:.92rem;max-width:520px}
+.toggles{display:flex;gap:8px;flex-wrap:wrap}
+.tg{font-family:var(--mono);font-size:.78rem;padding:7px 12px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;transition:.2s}
+.tg.on{border-color:var(--a1);color:var(--a1);background:rgba(47,224,165,.07)}
+.chart-box{position:relative}
+#esi{width:100%;height:320px;display:block;cursor:crosshair;touch-action:pan-y}
+.tip{position:absolute;pointer-events:none;background:#0a1120;border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-family:var(--mono);font-size:.76rem;opacity:0;transition:opacity .15s;white-space:nowrap}
+.tip b{color:var(--text)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-family:var(--mono);font-size:.74rem;color:var(--dim)}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.note{font-size:.74rem;color:var(--dim);font-family:var(--mono);margin-top:8px}
+.lab-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.ls{background:#0a1120;border:1px solid var(--line);border-radius:12px;padding:14px}
+.ls b{font-family:var(--disp);font-size:1.6rem;display:block;line-height:1.1}
+.ls span{font-size:.78rem;color:var(--muted)}
+
+/* projects */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:36px 0 26px}
+.filters button{font-family:var(--mono);font-size:.8rem;padding:8px 14px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;transition:.2s}
+.filters button:hover{color:var(--text)}
+.filters button.on{background:var(--grad);color:#04121a;border-color:transparent;font-weight:600}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;align-items:start}
+.pc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;transition:transform .3s,border-color .3s;overflow:hidden}
+.pc::after{content:"";position:absolute;inset:0;background:radial-gradient(460px circle at var(--mx,50%) var(--my,0%),rgba(47,224,165,.08),transparent 45%);opacity:0;transition:.3s;pointer-events:none}
+.pc:hover{transform:translateY(-4px);border-color:#2b3c63}
+.pc:hover::after{opacity:1}
+.pc.hide{display:none}
+.pc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-family:var(--mono);font-size:.74rem;color:var(--dim)}
+.tagc{padding:3px 9px;border-radius:7px;border:1px solid var(--line);color:var(--muted)}
+.tagc.fin{color:var(--gold);border-color:rgba(255,196,107,.3);background:rgba(255,196,107,.06)}
+.tagc.ds{color:var(--a2);border-color:rgba(91,140,255,.3);background:rgba(91,140,255,.06)}
+.pc h3{font-size:1.28rem;margin-bottom:8px}
+.pc .q{color:var(--text);font-size:.98rem;margin-bottom:12px;font-style:italic;opacity:.9}
+.pc p{color:var(--muted);font-size:.94rem}
+.nums{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 4px}
+.n{background:#0a1120;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.n b{font-family:var(--disp);font-size:1.15rem;display:block;line-height:1.1}
+.n span{font-size:.72rem;color:var(--muted)}
+details{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+summary{cursor:pointer;font-family:var(--mono);font-size:.8rem;color:var(--a1);list-style:none;display:flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-grid;place-items:center;width:18px;height:18px;border:1px solid var(--a1);border-radius:5px;font-size:.8rem;transition:.2s}
+details[open] summary::before{content:"−"}
+details ul{margin:12px 0 0 18px;color:var(--muted);font-size:.9rem}
+details li{margin-bottom:6px}
+details li::marker{color:var(--a1)}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:16px}
+.stack span{font-family:var(--mono);font-size:.7rem;padding:3px 9px;border-radius:7px;background:rgba(91,140,255,.08);color:#a9c0ff;border:1px solid rgba(91,140,255,.2)}
+.plinks{display:flex;gap:16px;margin-top:14px;font-size:.86rem;font-weight:600}
+.plinks a{display:inline-flex;align-items:center;gap:6px;opacity:.85}
+.plinks a:hover{color:var(--a1);opacity:1}
+.plinks svg{width:15px;height:15px}
+.sumbtn{background:none;border:0;padding:0;font:inherit;font-weight:600;font-size:.86rem;color:var(--a1);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.sumbtn:hover{text-decoration:underline}
+.sumbtn.big{margin-top:18px;padding:11px 18px;border:1px solid var(--a1);border-radius:11px;background:rgba(47,224,165,.06)}
+.sumbtn.big:hover{text-decoration:none;background:rgba(47,224,165,.12)}
+.paperline{font-family:var(--mono);font-size:.76rem;color:var(--gold);margin:-4px 0 10px}
+#modal{position:fixed;inset:0;z-index:90;display:none;align-items:flex-start;justify-content:center;padding:6vh 16px;background:rgba(3,6,12,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);overflow-y:auto}
+#modal.open{display:flex}
+.mbox{position:relative;width:min(760px,100%);background:#0b1324;border:1px solid var(--line);border-radius:22px;padding:34px 34px 28px;box-shadow:0 40px 90px -30px #000;animation:pop .28s cubic-bezier(.2,.7,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.98)}}
+.mx{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;font-size:1.2rem}
+.mx:hover{color:var(--text);border-color:var(--a1)}
+.mtag{padding-right:44px;font-family:var(--mono);font-size:.74rem;color:var(--a1);letter-spacing:.1em;text-transform:uppercase}
+.mbox h3{font-size:1.7rem;margin:6px 0 6px;padding-right:40px}
+.mstatus{display:inline-block;font-family:var(--mono);font-size:.74rem;color:var(--gold);border:1px solid rgba(255,196,107,.3);background:rgba(255,196,107,.06);padding:4px 10px;border-radius:8px;margin-bottom:18px}
+.mtldr{background:#0e1830;border-left:3px solid var(--a1);border-radius:8px;padding:14px 16px;color:var(--text);margin-bottom:20px}
+.msec{margin-bottom:18px}
+.msec h4{font-family:var(--mono);font-size:.78rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.msec p,.msec li{color:var(--muted);font-size:.96rem}
+.msec ul{margin-left:18px}.msec li{margin-bottom:5px}.msec li::marker{color:var(--a1)}
+.mnums{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 20px}
+.mtable{width:100%;border-collapse:collapse;font-size:.88rem;margin:6px 0 8px}
+.mtable th,.mtable td{padding:8px 10px;border-bottom:1px solid #1a2640;text-align:right;white-space:nowrap}
+.mtable th:first-child,.mtable td:first-child{text-align:left;white-space:normal}
+.mtable th{font-family:var(--mono);font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.mtable td{color:var(--muted)}
+.mtable tr.best td{color:var(--up)}
+.mtable tr.mine td{color:var(--text);background:rgba(91,140,255,.07)}
+.mscroll{overflow-x:auto}
+.mnote{font-family:var(--mono);font-size:.74rem;color:var(--dim);margin-top:4px}
+.mstack{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.mstack span{font-family:var(--mono);font-size:.72rem;padding:3px 9px;border-radius:7px;background:rgba(91,140,255,.08);color:#a9c0ff;border:1px solid rgba(91,140,255,.2)}
+body.lock{overflow:hidden}
+@media (max-width:760px){.mbox{padding:26px 20px}.mbox h3{font-size:1.35rem}.mtable{font-size:.78rem}.mtable th,.mtable td{padding:7px 5px}.mtable th{font-size:.62rem}}
+.also{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.86rem}
+.also .l{font-family:var(--mono);color:var(--dim);font-size:.78rem}
+.also span.m{padding:7px 13px;border:1px dashed #283656;border-radius:9px;color:var(--muted)}
+
+/* now */
+.now-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.now{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;position:relative}
+.now .st{font-family:var(--mono);font-size:.72rem;color:var(--gold);display:flex;align-items:center;gap:7px;margin-bottom:12px}
+.now .st i{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse2 1.8s infinite}
+@keyframes pulse2{50%{opacity:.3}}
+.now h3{font-size:1.08rem;margin-bottom:8px}
+.now p{color:var(--muted);font-size:.9rem}
+.bar{height:5px;border-radius:5px;background:#16213a;margin-top:16px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--grad);border-radius:5px;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+
+/* toolkit */
+.tk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;transition:.25s}
+.tool:hover{border-color:#2b3c63;transform:translateY(-3px)}
+.tool .step{font-family:var(--mono);font-size:.72rem;color:var(--dim)}
+.tool h3{font-size:1.1rem;margin:4px 0 6px}
+.tool p{color:var(--muted);font-size:.86rem;margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-family:var(--mono);font-size:.72rem;padding:4px 9px;border-radius:7px;background:rgba(47,224,165,.06);color:#a6f0d6;border:1px solid rgba(47,224,165,.18)}
+
+/* recognition */
+.rec{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;overflow:hidden;position:relative}
+.rc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
+.rc .big{font-family:var(--disp);font-size:1.9rem;font-weight:700;margin-bottom:4px}
+.rc h3{font-size:1rem;margin-bottom:4px}
+.rc p{color:var(--muted);font-size:.88rem}
+
+/* contact */
+.cc{display:grid;grid-template-columns:1.2fr .8fr;border:1px solid var(--line);border-radius:26px;overflow:hidden;background:linear-gradient(135deg,#0e182e,#0a1120)}
+.ct{padding:54px}
+.ct h2{font-size:clamp(2rem,4vw,2.9rem);margin-bottom:14px}
+.ct p{color:var(--muted);margin-bottom:28px;max-width:480px}
+.clist{display:grid;gap:12px;margin-bottom:28px}
+.ci{display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid var(--line);border-radius:13px;background:rgba(6,10,18,.45);transition:.2s}
+.ci:hover{border-color:var(--a1)}
+.ci .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(47,224,165,.1);color:var(--a1);flex-shrink:0}
+.ci .ic svg{width:18px;height:18px}
+.ci small{display:block;color:var(--dim);font-size:.7rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.ci div{font-weight:600;word-break:break-all}
+.copy{margin-left:auto;font-size:.76rem;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.copy:hover{color:var(--a1);border-color:var(--a1)}
+.cimg{position:relative;min-height:420px}
+.cimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 78%}
+.cimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0d172c 0%,rgba(13,23,44,.15) 40%,transparent)}
+footer{padding:36px 0;border-top:1px solid var(--line);color:var(--dim);font-size:.84rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.toast{position:fixed;bottom:26px;left:50%;opacity:0;pointer-events:none;transform:translateX(-50%) translateY(60px);background:var(--card2);border:1px solid var(--a1);padding:10px 18px;border-radius:12px;font-size:.86rem;transition:.3s;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+
+@media (max-width:1000px){
+  .hero-grid,.about-grid,.cc{grid-template-columns:1fr}
+  .portrait{order:-1;width:min(290px,78%)}
+  .about-photo{max-width:420px}
+  .tk-grid,.rec{grid-template-columns:1fr 1fr}
+  .now-grid{grid-template-columns:1fr}
+  .lab-stats{grid-template-columns:1fr 1fr}
+  .cimg{min-height:340px;order:-1}
+  .cimg::after{background:linear-gradient(0deg,#0d172c 0%,transparent 60%)}
+  .cimg img{object-position:50% 70%}
+}
+@media (max-width:760px){
+  section{padding:80px 0}
+  .links,.nav-cta{display:none}
+  .burger{display:block}
+  .links.open{display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(6,10,18,.97);padding:24px;gap:20px;border-bottom:1px solid var(--line);font-size:1.05rem}
+  .pgrid,.tk-grid,.rec{grid-template-columns:1fr}
+  .job{grid-template-columns:1fr;gap:6px}
+  .qcard{display:none}
+  .ct{padding:32px 22px}
+  .lab{padding:20px}
+  #esi{height:240px}
+  .cell{grid-template-columns:44px 1fr}
+  .tbl td:first-child{width:110px}
+  .ticker{margin-top:44px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="glow a"></div><div class="glow b"></div>
+<div id="cursor"></div>
+
+<nav id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo"><i>&gt;_</i>keshav.arora</a>
+    <div class="links" id="links">
+      <a href="#about">About</a>
+      <a href="#lab">ESI Lab</a>
+      <a href="#work">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="btn bg nav-cta" href="assets/Keshav_Arora_Resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+    <button class="burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="status rv"><i></i>open to data &amp; finance roles · 2026–27</div>
+      <h1 class="rv d1"><span class="name">Hi, I'm Keshav Arora —</span>I make <span class="gt">financial data</span> tell the truth.</h1>
+      <div class="typed rv d2">$ role --current <b id="typed"></b><span class="caret"></span></div>
+      <p class="lead rv d2">I'm a data science student at <strong>VIT Vellore</strong> who keeps ending up in finance. I build models that read the economy, price risk and allocate money — and I care a lot about testing them honestly, so the numbers hold up outside a notebook.</p>
+      <div class="cta rv d3">
+        <a href="#projects" class="btn bp">See the work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="assets/Keshav_Arora_Resume.pdf" class="btn bg" target="_blank" rel="noopener">Resume
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+      </div>
+      <div class="socials rv d3">
+        <a data-link="linkedin" href="#" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.84-2.05 3.78-2.05 4.05 0 4.8 2.66 4.8 6.12V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z"/></svg></a>
+        <a data-link="github" href="#" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+        <a data-link="kaggle" href="#" target="_blank" rel="noopener" aria-label="Kaggle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.8 23.4c-.02.1-.12.15-.3.15h-3.1c-.2 0-.36-.08-.5-.24l-5.13-6.53-1.43 1.36v5.08c0 .22-.11.33-.33.33H5.6c-.22 0-.33-.11-.33-.33V.77c0-.22.11-.33.33-.33h2.4c.22 0 .33.11.33.33v14.4l6.15-6.22c.15-.15.3-.22.48-.22h3.2c.15 0 .25.06.29.18.04.15.03.25-.04.3l-6.5 6.3 6.78 8.45c.1.13.12.25.07.36z"/></svg></a>
+        <a href="mailto:keshavarora1008@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+      </div>
+    </div>
+    <div class="portrait rv d2">
+      <div class="frame"><img src="assets/headshot.jpg" alt="Keshav Arora" width="413" height="531"></div>
+      <div class="qcard q1"><span class="sym">IQC.RANK</span><span class="val">Top 2.3%</span><span class="chg">▲ Round 2</span>
+        <svg width="110" height="24" viewBox="0 0 110 24"><polyline fill="none" stroke="#2fe0a5" stroke-width="2" points="0,20 12,18 22,19 34,14 46,15 58,10 70,11 82,6 96,7 110,2"/></svg></div>
+      <div class="qcard q2"><span class="sym">ESI.AUC</span><span class="val">0.84</span><span class="chg">▲ 6-mo lead</span>
+        <svg width="110" height="24" viewBox="0 0 110 24"><polyline fill="none" stroke="#5b8cff" stroke-width="2" points="0,18 14,17 26,19 38,12 50,4 62,10 74,16 86,14 98,6 110,8"/></svg></div>
+    </div>
+  </div>
+  <div class="ticker" aria-label="Highlights">
+    <div class="ticker-track" id="ticker">
+      <span class="tk">ESI <b>AUC 0.84</b><span class="u">▲ recessions flagged 6 mo early</span></span>
+      <span class="tk">WQ.IQC <b>TOP 2.3%</b><span class="u">▲ Round 2</span></span>
+      <span class="tk">ALPHAS <b>20+</b><span class="u">▲ submitted</span></span>
+      <span class="tk">OECD <b>7</b><span class="g">countries validated</span></span>
+      <span class="tk">DALAL.ST <b>1,400+</b><span class="u">▲ students · 2 days</span></span>
+      <span class="tk">FUNDS <b>₹9 CR</b><span class="g">managed</span></span>
+      <span class="tk">COST.CUT <b>40%+</b><span class="u">▲ via audits</span></span>
+      <span class="tk">MACRO.DATA <b>1970–2026</b><span class="g">56 years</span></span>
+      <span class="tk">PAPERS <b>2</b><span class="g">under review · Financial Innovation</span></span>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-photo rv">
+      <div class="ph"><img src="assets/formal.jpg" alt="Keshav Arora in a suit"></div>
+      <div class="cap"><b>Keshav Arora</b> · B.Tech CSE (Data Science), VIT Vellore</div>
+    </div>
+    <div class="story">
+      <div class="eyebrow rv">01 <b>/ about</b></div>
+      <h2 class="h2 rv d1">Data person by training, <span class="gt">finance person by curiosity</span>.</h2>
+      <p class="rv d1">I got into data science through code and stayed for the questions money raises. Can you see a recession coming before the headlines do? How should a portfolio change when the economy starts to wobble? Why did a model say no to a loan applicant? Those are the problems I like spending weekends on.</p>
+      <p class="rv d2">My approach is simple: <strong>start with a clear question, get the data right, and be strict about testing</strong>. That means no peeking at future data, comparing against simple baselines, and explaining the result in plain language. A model that only looks good in a notebook isn't worth much.</p>
+      <p class="rv d2">Away from the screen, I've handled real money too, running the finances for VIT's Riviera and Gravitas festivals, where a careful spreadsheet saved events more than 40% of their budgets.</p>
+
+      <div class="nb rv d3">
+        <div class="nb-top"><i></i><i></i><i></i><span>keshav.ipynb</span></div>
+        <div class="cell"><span class="p">In [1]:</span><code><span class="k">from</span> people <span class="k">import</span> keshav
+keshav.<span class="f">describe</span>()</code></div>
+        <div class="cell"><span class="p o">Out[1]:</span>
+          <table class="tbl">
+            <tr><td>role</td><td>Data Scientist / Analyst</td></tr>
+            <tr><td>domain</td><td>Finance · Macroeconomics · Risk</td></tr>
+            <tr><td>education</td><td>B.Tech CSE (Data Science), VIT Vellore · 2027</td></tr>
+            <tr><td>cgpa</td><td>7.95 / 10</td></tr>
+            <tr><td>main_tools</td><td>Python, SQL, Power BI, Excel</td></tr>
+            <tr><td>currently</td><td>RL portfolio research · WorldQuant alphas</td></tr>
+            <tr><td>looking_for</td><td>Data science, analytics &amp; quant internships</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ESI LAB ================= -->
+<section id="lab" style="padding-top:40px">
+  <div class="wrap">
+    <div class="eyebrow rv">02 <b>/ flagship research</b></div>
+    <h2 class="h2 rv d1">Can data see a recession <span class="gt">before it happens?</span></h2>
+    <p class="sub rv d1">That question became the Economic Stress Index, my main research project, now submitted to <em>Financial Innovation</em> (Springer). It turns 18 indicators into five "engines" (inflation, labour, financial, monetary and real economy), shows where stress starts and how it spreads, and estimates whether a recession will begin in the next six months.</p>
+
+    <div class="lab rv d2">
+      <div class="lab-head">
+        <div>
+          <h3>ESI Lab — play with the idea</h3>
+          <p>Hover or tap the chart to read the stress score. Turn sectors on and off to see how each one feeds the index.</p>
+        </div>
+        <div class="toggles" id="toggles">
+          <button class="tg on" data-s="0">Inflation</button>
+          <button class="tg on" data-s="1">Labour</button>
+          <button class="tg on" data-s="2">Financial</button>
+          <button class="tg on" data-s="3">Monetary</button>
+          <button class="tg on" data-s="4">Real economy</button>
+        </div>
+      </div>
+      <div class="chart-box">
+        <canvas id="esi"></canvas>
+        <div class="tip" id="tip"></div>
+      </div>
+      <div class="legend"><span><i style="background:linear-gradient(90deg,#2fe0a5,#5b8cff)"></i>Stress index</span><span><i style="background:#ff6b81;opacity:.6"></i>Recession period</span><span><i style="background:#ffc46b"></i>Alert threshold</span></div>
+      <div class="note">Illustrative simulation of how the index behaves; not the model's actual output.</div>
+      <div class="lab-stats">
+        <div class="ls"><b class="gt">0.84</b><span>AUC, rolling backtest (vs 0.70–0.75 for the yield curve)</span></div>
+        <div class="ls"><b>0.73</b><span>avg. AUC on 7 countries held out, one at a time</span></div>
+        <div class="ls"><b>6 mo</b><span>forecast horizon</span></div>
+        <div class="ls"><b>0</b><span>false alarms at the chosen alert threshold</span></div>
+      </div>
+      <button class="sumbtn big" type="button" data-sum="esi">Read the paper summary ↗</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK ================= -->
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow rv">03 <b>/ experience</b></div>
+    <h2 class="h2 rv d1">Where I've put this to use</h2>
+    <div class="xp">
+      <div class="job rv">
+        <div class="when"><b>Quant research</b>2025 — now</div>
+        <div><h3>Alpha Researcher</h3><div class="org">WorldQuant BRAIN · International Quant Championship</div>
+          <p>I design trading signals ("alphas") from market data and test them on WorldQuant's simulation platform. It's a fast loop of hypothesis, backtest, reject, repeat, which has taught me how easily a pretty backtest can lie.</p>
+          <div class="hl"><span class="kpi">20+ alphas submitted</span><span class="kpi">Top 2.3% globally</span><span class="kpi">Round 2 qualifier</span></div></div>
+      </div>
+      <div class="job rv">
+        <div class="when"><b>Data internship</b>Summer 2025</div>
+        <div><h3>Intern, VIP Matrix Project</h3><div class="org">Genpact</div>
+          <p>The analytics team was spending hours on manual data prep. I built Python and Microsoft Fabric pipelines that took data from raw extraction to report-ready, tuned the SQL behind recurring reports, and turned the output into Power BI dashboards that stakeholders could read at a glance.</p>
+          <div class="hl"><span class="kpi">3 Power BI dashboards</span><span class="kpi">Manual work automated</span><span class="kpi">Python · SQL · Fabric</span></div></div>
+      </div>
+      <div class="job rv">
+        <div class="when"><b>Finance lead</b>2026</div>
+        <div><h3>Finance Coordinator</h3><div class="org">Riviera / Gravitas, VIT Vellore</div>
+          <p>I looked after the money for two of VIT's flagship festivals, planning budgets, allocating funds across departments and auditing what each event actually spent. Treating it like a data problem paid off: the audits found enough waste to cut costs at several events by over 40%.</p>
+          <div class="hl"><span class="kpi">₹9 crore managed</span><span class="kpi">40%+ cost savings</span></div></div>
+      </div>
+      <div class="job rv">
+        <div class="when"><b>Finance club</b>2024 — 2025</div>
+        <div><h3>Senior Core Member</h3><div class="org">Bulls and Bears Club, VIT</div>
+          <p>I helped run Finance Carnival and Cashflow at Gravitas, and built the online multiplayer game the Cashflow event was played on.</p>
+          <div class="hl"><span class="kpi">650+ attendees</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects" style="padding-top:40px">
+  <div class="wrap">
+    <div class="eyebrow rv">04 <b>/ projects</b></div>
+    <h2 class="h2 rv d1">Case studies</h2>
+    <p class="sub rv d1">Each one started with a question. Open "How I built it" for a quick look, or "Read summary" for the full story.</p>
+    <div class="filters rv d2" id="filters">
+      <button class="on" data-f="all">all</button>
+      <button data-f="fin">finance</button>
+      <button data-f="ml">machine learning</button>
+      <button data-f="viz">dashboards</button>
+      <button data-f="eng">engineering</button>
+    </div>
+    <div class="pgrid" id="pgrid">
+
+      <article class="pc rv" data-cat="fin ml">
+        <div class="pc-top"><span class="tagc fin">portfolio · RL</span><span>under review</span></div>
+        <h3>Teaching an AI to rebalance a portfolio</h3>
+        <div class="paperline">📄 Paper submitted to Financial Innovation (Springer)</div>
+        <div class="q">"If an index can sense stress, can a trading agent use it to protect a portfolio?"</div>
+        <p>I extended the stress index into an adaptive version and gave it to a reinforcement-learning agent that decides how to split money across six ETFs: equities, bonds, gold and real estate.</p>
+        <div class="nums"><div class="n"><b>6</b><span>assets</span></div><div class="n"><b>5</b><span>strategies compared</span></div><div class="n"><b>0.56</b><span>Sharpe (vs 0.67 Markowitz)</span></div></div>
+        <details><summary>How I built it</summary><ul>
+          <li>Index weights are re-learned over time with rolling ridge regression, and only updated when the model is confident.</li>
+          <li>A PPO agent sees macro, market and stress signals together and outputs portfolio weights.</li>
+          <li>Benchmarked against equal-weight and Markowitz portfolios, and against RL without the index, using only past data at every step.</li>
+          <li>Honest result so far: on 2022–2024 test data, Markowitz still had the best Sharpe. A longer training run and more test periods are next.</li></ul></details>
+        <div class="stack"><span>Python</span><span>PPO</span><span>Ridge regression</span><span>Backtesting</span></div>
+        <div class="plinks"><button class="sumbtn" type="button" data-sum="adaptive">Read summary ↗</button><a data-link="adaptive" href="#" target="_blank" rel="noopener">Code ↗</a></div>
+      </article>
+
+      <article class="pc rv d1" data-cat="fin ml viz">
+        <div class="pc-top"><span class="tagc fin">risk · explainable AI</span><span>2025</span></div>
+        <h3>CreditLens: a credit model that explains itself</h3>
+        <div class="q">"If a bank rejects you, shouldn't it be able to say why — and be fair about it?"</div>
+        <p>A credit-default model that predicts risk and shows the reasons behind each decision, then checks whether those reasons are fair across groups and stable when the input changes slightly.</p>
+        <div class="nums"><div class="n"><b class="gt">0.81</b><span>ROC-AUC</span></div><div class="n"><b>85%</b><span>bad borrowers caught</span></div><div class="n"><b>−47%</b><span>total cost</span></div></div>
+        <details><summary>How I built it</summary><ul>
+          <li>Trained on the German Credit (UCI) dataset; compared logistic regression, XGBoost and random forest, and picked random forest.</li>
+          <li>Used a cost-based cut-off (0.27) instead of 0.5, so the model catches 85% of bad borrowers instead of 35%.</li>
+          <li>SHAP shows which features push each applicant's risk up or down.</li>
+          <li>Fairness checks across demographic groups, plus stability tests on the explanations themselves.</li>
+          <li>Wrapped it all in a Streamlit dashboard: probability, risk band, reasons and diagnostics.</li></ul></details>
+        <div class="stack"><span>Random Forest</span><span>XGBoost</span><span>SHAP</span><span>Streamlit</span></div>
+        <div class="plinks"><button class="sumbtn" type="button" data-sum="credit">Read summary ↗</button><a data-link="credit" href="#" target="_blank" rel="noopener">Code ↗</a><a data-link="credit_demo" href="#" target="_blank" rel="noopener">Live demo ↗</a></div>
+      </article>
+
+      <article class="pc rv" data-cat="fin ml viz">
+        <div class="pc-top"><span class="tagc fin">macro · stress testing</span><span>2025 — now</span></div>
+        <h3>A digital twin of the economy</h3>
+        <div class="q">"What happens to markets and credit if rates spike, or oil doubles, or both?"</div>
+        <p>A simulator built on 26 years of real macro and market data that lets you throw shocks at the economy and watch the knock-on effects on markets, credit risk and recovery time.</p>
+        <div class="nums"><div class="n"><b>26 yrs</b><span>of data</span></div><div class="n"><b>10</b><span>crisis scenarios</span></div><div class="n"><b>~½</b><span>won by the RL policy</span></div></div>
+        <details><summary>How I built it</summary><ul>
+          <li>Pulled GDP, inflation, rates, unemployment, FX, equities and bond yields from FRED, the World Bank and the IMF.</li>
+          <li>Classified each period as expansion, slowdown, recession or recovery.</li>
+          <li>Trained a PPO policy to respond to shocks and compared it with doing nothing, a fixed policy and rule-based responses across 10 crisis scenarios. It won about half, so it helps in some crises but not all.</li></ul></details>
+        <div class="stack"><span>Python</span><span>Regime detection</span><span>RL</span><span>Streamlit</span></div>
+        <div class="plinks"><button class="sumbtn" type="button" data-sum="twin">Read summary ↗</button><a data-link="twin" href="#" target="_blank" rel="noopener">Code ↗</a><a data-link="twin_demo" href="#" target="_blank" rel="noopener">Live demo ↗</a></div>
+      </article>
+
+      <article class="pc rv d1" data-cat="fin eng">
+        <div class="pc-top"><span class="tagc fin">markets · web app</span><span>2024</span></div>
+        <h3>Dalal Street: a stock market for 1,400 students</h3>
+        <div class="q">"How do you teach trading without anyone losing real money?"</div>
+        <p>A two-day virtual stock exchange where students traded through bankers, and prices moved on real buying and selling plus breaking news, with live portfolio values and a leaderboard.</p>
+        <div class="nums"><div class="n"><b class="gt">1,400+</b><span>students</span></div><div class="n"><b>2 days</b><span>live event</span></div><div class="n"><b>News</b><span>+ order-flow pricing</span></div></div>
+        <div class="stack"><span>MongoDB</span><span>Express</span><span>React</span><span>Node.js</span></div>
+        <div class="plinks"><button class="sumbtn" type="button" data-sum="dalal">Read summary ↗</button><a data-link="dalal" href="#" target="_blank" rel="noopener">Code ↗</a></div>
+      </article>
+
+      <article class="pc rv" data-cat="ml eng">
+        <div class="pc-top"><span class="tagc ds">IoT · on-device ML</span><span>2025</span></div>
+        <h3>An air-quality sensor that learns on its own</h3>
+        <div class="q">"Can a tiny microcontroller train a neural network with no dataset to start from?"</div>
+        <p>An ESP32 that measures PM2.5, temperature and humidity, works out the AQI live, and retrains a small neural network on itself every 15 seconds.</p>
+        <div class="nums"><div class="n"><b>15 s</b><span>retraining cycle</span></div><div class="n"><b>0</b><span>pre-trained data</span></div></div>
+        <div class="stack"><span>ESP32</span><span>Neural networks</span><span>ThingSpeak</span></div>
+        <div class="plinks"><button class="sumbtn" type="button" data-sum="aqi">Read summary ↗</button><a data-link="aqi" href="#" target="_blank" rel="noopener">Code ↗</a></div>
+      </article>
+
+      <article class="pc rv d1" data-cat="ml">
+        <div class="pc-top"><span class="tagc ds">privacy · computer vision</span><span>in progress</span></div>
+        <h3>Spotting dangerous crowds, privately</h3>
+        <div class="q">"Can cameras warn about stampedes without sending video to a central server?"</div>
+        <p>A federated-learning system where each camera node learns crowd density locally and only shares model updates, never raw footage.</p>
+        <div class="stack"><span>Federated learning</span><span>FedAvg</span><span>Computer vision</span></div>
+        <div class="plinks"><button class="sumbtn" type="button" data-sum="fed">Read summary ↗</button><a data-link="fed" href="#" target="_blank" rel="noopener">Code ↗</a></div>
+      </article>
+    </div>
+    <div class="also rv"><span class="l">// also built</span><span class="m">Cashflow: multiplayer finance game</span><span class="m">Weather forecast web app</span></div>
+  </div>
+</section>
+
+<!-- ================= NOW ================= -->
+<section id="now" style="padding-top:20px">
+  <div class="wrap">
+    <div class="eyebrow rv">05 <b>/ right now</b></div>
+    <h2 class="h2 rv d1">What I'm working on</h2>
+    <div class="now-grid">
+      <div class="now rv"><div class="st"><i></i>under review</div><h3>Adaptive ESI + RL paper</h3><p>The RL portfolio-allocation paper is submitted to <em>Financial Innovation</em> (Springer).</p></div>
+      <div class="now rv d1"><div class="st"><i></i>ongoing</div><h3>Alpha research</h3><p>Designing and testing new signals on WorldQuant BRAIN.</p></div>
+      <div class="now rv d2"><div class="st"><i></i>under review</div><h3>ESI research paper</h3><p>The Economic Stress Index paper is submitted to <em>Financial Innovation</em> (Springer) and is under review.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TOOLKIT ================= -->
+<section id="toolkit" style="padding-top:20px">
+  <div class="wrap">
+    <div class="eyebrow rv">06 <b>/ toolkit</b></div>
+    <h2 class="h2 rv d1">From raw data to a decision</h2>
+    <p class="sub rv d1">The tools I reach for at each step of a project.</p>
+    <div class="tk-grid">
+      <div class="tool rv"><div class="step">step 01</div><h3>Collect &amp; clean</h3><p>Getting data in and making it trustworthy.</p><div class="chips"><span>SQL</span><span>Python</span><span>Pandas</span><span>NumPy</span><span>Microsoft Fabric</span><span>FRED / OECD / IMF</span></div></div>
+      <div class="tool rv d1"><div class="step">step 02</div><h3>Analyse</h3><p>Finding the signal in the noise.</p><div class="chips"><span>Statistics</span><span>Time series</span><span>PCA</span><span>Clustering</span><span>Factor models</span><span>Kalman filter</span><span>R</span></div></div>
+      <div class="tool rv d2"><div class="step">step 03</div><h3>Model</h3><p>Predicting, allocating and explaining.</p><div class="chips"><span>Scikit-learn</span><span>XGBoost</span><span>Regression</span><span>Neural nets</span><span>RL (PPO)</span><span>SHAP</span><span>Backtesting</span></div></div>
+      <div class="tool rv d3"><div class="step">step 04</div><h3>Communicate</h3><p>Turning results into something people use.</p><div class="chips"><span>Power BI</span><span>Excel</span><span>Matplotlib</span><span>Streamlit</span><span>React</span><span>Git</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RECOGNITION ================= -->
+<section id="recognition" style="padding-top:20px">
+  <div class="wrap">
+    <div class="eyebrow rv">07 <b>/ recognition</b></div>
+    <h2 class="h2 rv d1">Achievements &amp; certifications</h2>
+    <div class="rec">
+      <div class="rc rv"><div class="big gt">Top 2.3%</div><h3>WorldQuant BRAIN IQC</h3><p>Qualified for Round 2 of the International Quant Championship.</p></div>
+      <div class="rc rv d1"><div class="big gt">Selected</div><h3>Algoverse Research Program</h3><p>Accepted with a 30% merit scholarship.</p></div>
+      <div class="rc rv d2"><div class="big gt">Certified</div><h3>McKinsey Forward Program</h3><p>Structured problem-solving and professional skills.</p></div>
+      <div class="rc rv d3"><div class="big gt">LoR</div><h3>Letter of Recommendation</h3><p>For running a finance workshop at Spring Days School.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="cc rv">
+      <div class="ct">
+        <div class="eyebrow">08 <b>/ contact</b></div>
+        <h2>Got a dataset and a <span class="gt">hard question?</span></h2>
+        <p>I'm looking for data science, analytics and quant internships and graduate roles. If you're hiring, or just want to talk markets and models, I'd love to hear from you.</p>
+        <div class="clist">
+          <a class="ci" href="mailto:keshavarora1008@gmail.com"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span><small>Email</small><div>keshavarora1008@gmail.com</div></span><button class="copy" type="button" data-copy="keshavarora1008@gmail.com">Copy</button></a>
+          <a class="ci" href="tel:+919625511813"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span><small>Phone</small><div>+91 96255 11813</div></span></a>
+          <a class="ci" data-link="linkedin" href="#" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.84-2.05 3.78-2.05 4.05 0 4.8 2.66 4.8 6.12V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z"/></svg></span><span><small>LinkedIn</small><div>Let's connect</div></span></a>
+        </div>
+        <a href="mailto:keshavarora1008@gmail.com" class="btn bp">Send me an email
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="cimg"><img src="assets/formal-2.jpg" alt="Keshav Arora"></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>© <span id="yr"></span> Keshav Arora</span><span class="mono">model.fit(curiosity) · hosted on Vercel</span></div></footer>
+<div class="toast" id="toast">Email copied</div>
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle"><div class="mbox" id="mbox"></div></div>
+
+<script>
+/* =====================================================================
+   YOUR LINKS — paste URLs between the quotes. Empty ones stay hidden.
+   ===================================================================== */
+const LINKS = {
+  linkedin:    "https://www.linkedin.com/in/keshav-arora-494bb528a/",  // LinkedIn profile
+  github:      "https://github.com/selink9",  // GitHub profile
+  kaggle:      "",  // Kaggle profile (optional)
+  adaptive:    "",  // Adaptive ESI + PPO repo
+  credit:      "",  // Credit risk repo
+  credit_demo: "",  // Credit risk live Streamlit app (optional)
+  twin:        "",  // Financial Digital Twin repo
+  twin_demo:   "",  // Digital Twin live app (optional)
+  dalal:       "",  // Dalal Street repo or site
+  aqi:         "",  // Air quality monitor repo
+  fed:         ""   // Federated stampede detection repo
+};
+document.querySelectorAll("[data-link]").forEach(el => {
+  const u = LINKS[el.dataset.link];
+  if (u) el.href = u;
+  else { const w = el.closest(".plinks"); el.remove(); if (w && !w.children.length) w.remove(); }
+});
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* nav, progress, active link */
+const nav = document.getElementById("nav"), prog = document.getElementById("progress"), links = document.getElementById("links");
+const secs = [...document.querySelectorAll("section[id]")];
+function onScroll(){
+  nav.classList.toggle("s", scrollY > 30);
+  prog.style.width = (scrollY / (document.documentElement.scrollHeight - innerHeight) * 100) + "%";
+  let cur = ""; secs.forEach(s => { if (scrollY >= s.offsetTop - 160) cur = s.id; });
+  links.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + cur));
+}
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+document.getElementById("burger").onclick = () => links.classList.toggle("open");
+links.querySelectorAll("a").forEach(a => a.onclick = () => links.classList.remove("open"));
+
+/* cursor glow */
+const cur = document.getElementById("cursor");
+addEventListener("pointermove", e => { cur.style.left = e.clientX + "px"; cur.style.top = e.clientY + "px"; }, {passive:true});
+
+/* typing */
+const roles = ["data_scientist", "data_analyst", "finance_enthusiast", "quant_researcher"];
+const tEl = document.getElementById("typed"); let ri = 0, ci = 0, del = false;
+(function type(){
+  const w = roles[ri]; tEl.textContent = w.slice(0, ci);
+  if (!del && ci < w.length) ci++; else if (del && ci > 0) ci--;
+  else if (!del) { del = true; return setTimeout(type, 1500); } else { del = false; ri = (ri + 1) % roles.length; }
+  setTimeout(type, del ? 40 : 80);
+})();
+
+/* ticker: duplicate for seamless loop */
+const tr = document.getElementById("ticker"); tr.innerHTML += tr.innerHTML;
+
+/* reveal + progress bars */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add("in");
+  e.target.querySelectorAll(".bar i").forEach(b => b.style.width = b.dataset.w);
+  io.unobserve(e.target);
+}), {threshold:.12});
+document.querySelectorAll(".rv").forEach(el => io.observe(el));
+
+/* project filter + spotlight */
+const cards = document.querySelectorAll("#pgrid .pc");
+document.querySelectorAll("#filters button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("#filters button").forEach(x => x.classList.remove("on")); b.classList.add("on");
+  cards.forEach(c => c.classList.toggle("hide", b.dataset.f !== "all" && !c.dataset.cat.split(" ").includes(b.dataset.f)));
+});
+cards.forEach(c => c.addEventListener("pointermove", e => { const r = c.getBoundingClientRect(); c.style.setProperty("--mx", e.clientX - r.left + "px"); c.style.setProperty("--my", e.clientY - r.top + "px"); }));
+
+/* copy */
+const toast = document.getElementById("toast");
+document.querySelectorAll(".copy").forEach(b => b.onclick = ev => {
+  ev.preventDefault(); ev.stopPropagation();
+  try { navigator.clipboard.writeText(b.dataset.copy).catch(()=>{}); } catch(_){}
+  toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 1500);
+});
+
+/* ================= PROJECT SUMMARIES =================
+   Edit the text here to update each pop-up.            */
+const SUMS = {
+  esi: {
+    tag: "Research paper · Macroeconomics", title: "Economic Stress Index (ESI v5)",
+    status: "Submitted to Financial Innovation (Springer) · under review",
+    tldr: "A 14-step early-warning system that splits the economy into five 'engines', tracks where stress starts and how it spreads, and estimates whether a recession will begin in the next six months.",
+    nums: [["0.84","AUC, rolling backtest"],["0.70–0.75","yield-curve benchmark"],["0.73","avg. AUC, 7 countries"],["0","false alarms at θ = 0.40"]],
+    secs: [
+      ["The question", "Well-known stress indices like the Fed's NFCI and the Kansas City FSI only look at finance, and they squash everything into one number early on, so you can't see where stress is coming from. The classic recession signal, an inverted yield curve, is a single variable that can't tell a credit crisis from an inflation shock or a COVID-style collapse. I wanted an index that keeps that detail."],
+      ["Data", ["18 US series from FRED (1970–2026), turned into 21 stress features, all signed so that higher always means more stress.", "A 7-country OECD panel (US, UK, Germany, Canada, Japan, France, Australia) covering 45 recession episodes."]],
+      ["How it works", ["<b>Five engines</b>: Inflation, Labour, Financial, Monetary and Real economy. Each gets a 0–100 score from rolling z-scores, a 60/40 leading-vs-coincident mix and a 20-year percentile rank.", "<b>Dispersion-adjusted index</b>: ESI = mean of the engines + 0.5 × their spread. This separates a crisis where every engine is high (2008) from a shock in one sector (2022).", "<b>Dynamic factor model with a Kalman filter</b>: extracts two hidden forces, a 'recession factor' and a 'policy-cycle factor', that add momentum the static scores miss.", "<b>Regime detection</b>: a 6-cluster Gaussian mixture model labels each month as normal growth, mild stress, inflation shock, labour recession, financial crisis or stagflation.", "<b>Machine learning</b>: logistic regression, random forest and gradient boosting, with time-ordered cross-validation, an F1-optimised alert threshold, a rolling out-of-sample backtest, and leave-one-country-out testing."]],
+      ["Results", ["Rolling out-of-sample AUC of <b>0.84</b> for six-month-ahead recession prediction, above the classic yield-curve benchmark of about 0.70–0.75.", "<b>Zero false alarms</b> at the chosen alert threshold of 0.40.", "Leave-one-country-out AUC averaged <b>0.73</b>. It was strongest for France (0.89) and Canada (0.79) and weakest for Japan (0.67, because deflation and zero rates break the signals) and Australia (0.62, only one recession).", "Real (0.25) and Labour (0.23) were the most important features, and both dynamic factors added information beyond the engine scores."]],
+      ["What it revealed", ["<b>How the 2008 crisis spread</b>: the Financial and Monetary engines rose 9–12 months before the recession began, Real about 6 months before, and Labour about 3 months before.", "<b>2022 wasn't a recession signal</b>: the index read 72.9, driven almost entirely by inflation, but the recession factor was negative, which was correct.", "<b>Different crises have different warning signs</b>: mild recessions are led by the labour market, systemic crises need labour and monetary stress together, and demand shocks show up first in prices and output."]],
+      ["Honest notes", "Recessions are only 8–12% of months, so accuracy alone is meaningless and I report AUC and F1 instead. In plain 5-fold time-series cross-validation, the six-month-ahead AUCs were lower (0.58–0.63). The 0.84 headline comes from the rolling backtest, which retrains as new data arrives. Every step is strictly forward-looking, with no future data leaking in."]
+    ],
+    stack: ["Python","statsmodels","Kalman filter","Gaussian mixture","Rolling PCA","Scikit-learn","FRED","OECD"]
+  },
+  adaptive: {
+    tag: "Research paper · Portfolio management", title: "Adaptive ESI + PPO for Dynamic Asset Allocation",
+    status: "Submitted to Financial Innovation (Springer) · under review",
+    tldr: "A reinforcement-learning agent that reads an adaptive version of the stress index and decides how to split money across six ETFs.",
+    nums: [["6","ETFs"],["5","strategies compared"],["0.56","Sharpe, adaptive AESI"],["0.67","Sharpe, best (Markowitz)"]],
+    secs: [
+      ["The question", "Static portfolios ignore how the economy changes, and many 'smart' backtests quietly use future data. Can an agent that sees economic stress make better allocation decisions, when it is tested honestly?"],
+      ["Approach", ["Made the stress index adaptive: its weights are re-learned over time with rolling ridge regression, and only updated out-of-sample when the model is confident (stability-constrained, confidence-gated).", "Trained a PPO agent whose state combines macro data, market data and the stress index.", "The agent allocates across a 6-asset ETF portfolio covering equities, bonds, gold and real estate."]],
+      ["How it's tested", ["A 5-variant ablation: equal-weight, rolling Markowitz, RL only, RL + static index, RL + adaptive index.", "Strict no-look-ahead rules: point-in-time normalisation and model selection on validation data only.", "The full pipeline is built and tested end to end."]],
+      ["Results (test period 2022–2024, demo run)", `<div class="mscroll"><table class="mtable">
+        <tr><th>Strategy</th><th>Return/yr</th><th>Sharpe</th><th>Max DD</th></tr>
+        <tr class="best"><td>Markowitz</td><td>8.1%</td><td>0.67</td><td>−18.7%</td></tr>
+        <tr><td>Equal weight</td><td>9.0%</td><td>0.60</td><td>−21.6%</td></tr>
+        <tr><td>PPO, no index</td><td>8.9%</td><td>0.60</td><td>−22.2%</td></tr>
+        <tr><td>PPO + fixed index</td><td>8.3%</td><td>0.57</td><td>−22.6%</td></tr>
+        <tr class="mine"><td>PPO + adaptive AESI</td><td>8.3%</td><td>0.56</td><td>−22.7%</td></tr>
+      </table></div><div class="mnote">Green = best risk-adjusted result · highlighted = my adaptive model · Max DD = maximum drawdown.</div>`],
+      ["What the numbers say", "Markowitz gave the best risk-adjusted result, with the highest Sharpe and the smallest drawdown. The adaptive AESI agent did not beat the simple methods in this run. The PPO agent was only trained briefly and the test window is short, so it ended up behaving close to equal weight. I'd rather report that honestly than tune until the backtest looks good."],
+      ["Next steps", ["A full-length PPO training run.", "More test periods, including stress periods, to see whether the adaptive index helps when it should matter most."]]
+    ],
+    stack: ["Python","PPO","Ridge regression","Markowitz","Backtesting"]
+  },
+  credit: {
+    tag: "Risk · Explainable AI", title: "CreditLens — Explainable Credit Risk",
+    status: "2025 · runs on Replit",
+    tldr: "A credit-default model tuned for what lenders actually care about, catching bad borrowers, with clear reasons for every decision.",
+    nums: [["0.81","ROC-AUC"],["85%","bad borrowers caught"],["0.59","F1 score"],["−47%","total cost (203 → 108)"]],
+    secs: [
+      ["The question", "Lenders use models to approve or reject loans. Missing a bad borrower costs far more than turning away a good one, an applicant deserves to know why they were rejected, and the model has to be fair."],
+      ["Data", "The German Credit (Statlog) dataset from the UCI Machine Learning Repository: 1,000 applicants and 20 variables."],
+      ["Approach", ["Compared Logistic Regression, XGBoost and Random Forest; Random Forest was the final model.", "Instead of the default 0.5 cut-off, chose a cost-based threshold of 0.27 that reflects how expensive a missed default is.", "SHAP explains the global drivers of risk and each applicant's individual reasons.", "Fairness checks across demographic groups, and stability tests on the explanations (top-k consistency, Jaccard similarity, rank correlation)."]],
+      ["Results (test set)", ["ROC-AUC of 0.81 and F1 of 0.59 at the 0.27 cut-off.", "Catches 85% of bad borrowers, compared with 35% at the usual 0.5 cut-off.", "Total misclassification cost fell from 203 to 108."]],
+      ["Output", "An interactive Streamlit dashboard showing default probability, risk category, the SHAP reasons, and fairness and stability diagnostics."]
+    ],
+    stack: ["Python","Random Forest","XGBoost","Logistic regression","SHAP","Streamlit"]
+  },
+  twin: {
+    tag: "Macro · Stress testing", title: "Financial Digital Twin",
+    status: "2025 – present · runs on Replit",
+    tldr: "A simulator of the economy that lets you apply shocks, like a rate hike or an oil spike, and see the effects on markets, credit and recovery.",
+    nums: [["26 yrs","of data (2000–2025)"],["7+","macro & market variables"],["4","regimes"],["10","crisis scenarios tested"],["~½","scenarios won by PPO"]],
+    secs: [
+      ["The question", "Banks and regulators stress-test portfolios against bad scenarios. Can a data-driven 'twin' of the economy make that faster and more adaptive?"],
+      ["Data", "GDP, inflation, interest rates, unemployment, exchange rates, equities and bond yields from FRED, the World Bank and the IMF."],
+      ["Approach", ["Detects which of four regimes the economy is in: expansion, slowdown, recession or recovery.", "Simulates five shocks: interest-rate, inflation, oil, recession and a combined crisis.", "A reinforcement-learning agent learns adaptive responses (rates, liquidity, exposure) and is compared with static, rule-based responses."]],
+      ["Results", ["Evaluated across 10 crisis scenarios against three baselines: doing nothing, a fixed policy and a rule-based policy.", "The PPO policy got the best score in about half of the scenarios.", "So it doesn't beat the rules everywhere: it works better in some kinds of crisis than others. Knowing <em>where</em> an adaptive policy helps is a useful finding in itself."]],
+      ["Output", "A Streamlit dashboard tracking six metrics: GDP impact, market impact, credit risk, financial stress level, recovery period and RL policy performance."]
+    ],
+    stack: ["Python","Regime detection","PPO","Streamlit","FRED","World Bank","IMF"]
+  },
+  dalal: {
+    tag: "Markets · Live event", title: "Dalal Street — Virtual Stock Market",
+    status: "2024 · live 2-day event",
+    tldr: "A virtual stock exchange that ran for two days with 1,400+ students trading through bankers, with prices moving on real order flow and breaking news.",
+    nums: [["1,400+","students"],["2 days","live event"],["Live","prices & leaderboard"]],
+    secs: [
+      ["The idea", "Teach trading and market intuition without anyone risking real money, in a setting that feels like a real exchange: busy, noisy and driven by news."],
+      ["How the market worked", ["Students placed their orders through <b>bankers</b>, who executed the trades on the platform, much like brokers on a real exchange.", "<b>Prices moved on supply and demand</b>: buying pushed a stock up and selling pushed it down.", "<b>News events</b> were released during the game and moved prices, so players had to react the way real traders do.", "Every player's portfolio was valued live and ranked on a leaderboard."]],
+      ["Scale", "The event ran for 2 days with more than 1,400 students taking part."]
+    ],
+    stack: ["MongoDB","Express","React","Node.js"]
+  },
+  aqi: {
+    tag: "IoT · On-device ML", title: "Real-Time Air Quality Monitor",
+    status: "2025",
+    tldr: "An ESP32 that measures air quality, computes the AQI live, and trains its own neural network on the device every 15 seconds.",
+    nums: [["15 s","retraining cycle"],["0","pre-trained data"]],
+    secs: [
+      ["The question", "Most ML on small devices uses a model trained elsewhere. Can a microcontroller learn from its own sensor readings, with no dataset to start from?"],
+      ["Approach", ["Reads PM2.5 and temperature/humidity (DHT11) sensors.", "Computes AQI with the standard EPA breakpoint formula.", "A small neural network updates itself with online backpropagation every 15 seconds."]],
+      ["Output", "Live data streamed to ThingSpeak, with LED and LCD alerts on the device."]
+    ],
+    stack: ["ESP32","Neural networks","ThingSpeak","C++ / Arduino"]
+  },
+  fed: {
+    tag: "Privacy · Computer vision", title: "Federated Stampede Detection",
+    status: "In progress · results coming soon",
+    tldr: "A federated-learning system that estimates crowd density across camera nodes and warns before a crowd gets dangerous, without sending raw video to a central server.",
+    secs: [
+      ["The question", "Stampedes and crowd crushes build up as density rises. Watching every camera centrally works, but streaming all that video is expensive and a privacy risk. Can the cameras learn together without sharing their footage?"],
+      ["Approach", ["Each edge node (a camera with a small computer) trains a crowd-density model on its own footage.", "Nodes share only model weights, never video. A server combines them with <b>FedAvg</b> and sends the improved model back.", "Density estimates are tracked over time, and an alert is raised when a zone crosses a safe-density threshold."]],
+      ["What I'll measure", ["How close the federated model gets to a model trained on all the data in one place.", "How much data each round sends compared with streaming the video.", "How early and how reliably it raises an alert before density becomes dangerous."]],
+      ["Status", "The framework is being built now. I'll add results here once testing is done."]
+    ],
+    stack: ["Python","Federated learning","FedAvg","Computer vision","Edge / IoT"]
+  }
+};
+const modal = document.getElementById("modal"), mbox = document.getElementById("mbox");
+function openSum(k){
+  const d = SUMS[k]; if (!d) return;
+  const sec = ([h, b]) => `<div class="msec"><h4>${h}</h4>${Array.isArray(b) ? "<ul>" + b.map(x => `<li>${x}</li>`).join("") + "</ul>" : `<p>${b}</p>`}</div>`;
+  mbox.innerHTML = `<button class="mx" aria-label="Close">×</button>
+    <div class="mtag">${d.tag}</div><h3 id="mtitle">${d.title}</h3><div class="mstatus">${d.status}</div>
+    <div class="mtldr">${d.tldr}</div>
+    ${d.nums ? `<div class="mnums">${d.nums.map(([b, s]) => `<div class="n"><b>${b}</b><span>${s}</span></div>`).join("")}</div>` : ""}
+    ${d.secs.map(sec).join("")}
+    <div class="msec"><h4>Stack</h4><div class="mstack">${d.stack.map(x => `<span>${x}</span>`).join("")}</div></div>`;
+  modal.classList.add("open"); document.body.classList.add("lock");
+  mbox.querySelector(".mx").onclick = closeSum; mbox.querySelector(".mx").focus();
+}
+function closeSum(){ modal.classList.remove("open"); document.body.classList.remove("lock"); }
+modal.addEventListener("click", e => { if (e.target === modal) closeSum(); });
+addEventListener("keydown", e => { if (e.key === "Escape") closeSum(); });
+document.querySelectorAll("[data-sum]").forEach(b => b.onclick = () => openSum(b.dataset.sum));
+
+/* ================= ESI LAB (illustrative simulation) ================= */
+(() => {
+  const cv = document.getElementById("esi"), ctx = cv.getContext("2d"), tip = document.getElementById("tip");
+  const Y0 = 2000, Y1 = 2025, N = (Y1 - Y0) * 12 + 1;
+  const rec = [[2001.2, 2001.9], [2007.95, 2009.5], [2020.15, 2020.35]];
+  // deterministic pseudo-random
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const bump = (t, c, w, h) => h * Math.exp(-Math.pow((t - c) / w, 2));
+  const sectors = [0,1,2,3,4].map(k => {
+    const arr = []; let n = 0;
+    for (let i = 0; i < N; i++) {
+      const t = Y0 + i / 12; n = n * 0.9 + (rnd() - .5) * 0.18;
+      let v = n + 0.15 * Math.sin(t * (0.6 + k * 0.25) + k);
+      const lead = [0.55, 0.35, 0.65, 0.5, 0.45][k];
+      v += bump(t, 2001.0, 0.55, [0.8,1.1,1.2,0.9,1.0][k]);
+      v += bump(t, 2008.2 - lead * 0.6, 0.75, [1.0,1.3,1.9,1.1,1.4][k]);
+      v += bump(t, 2020.0, 0.28, [0.6,1.8,1.3,0.7,1.7][k]);
+      v += k === 0 ? bump(t, 2022.4, 0.6, 1.1) : 0;
+      arr.push(v);
+    } return arr;
+  });
+  const on = [1,1,1,1,1];
+  const names = ["Inflation","Labour","Financial","Monetary","Real economy"];
+  let series = [], hover = -1, W, H, P = {l:38, r:14, t:14, b:26}, anim = 0;
+  function compute(){
+    const act = on.map((v,i)=>v?i:-1).filter(i=>i>=0);
+    series = Array.from({length:N}, (_, i) => act.length ? act.reduce((s,k)=>s+sectors[k][i],0) / act.length : 0);
+  }
+  function size(){ const d = Math.min(devicePixelRatio||1, 2), r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W*d; cv.height = H*d; ctx.setTransform(d,0,0,d,0,0); }
+  const X = i => P.l + (W - P.l - P.r) * i / (N - 1);
+  const Yv = v => P.t + (H - P.t - P.b) * (1 - (v + 0.6) / 2.4);
+  const TH = 0.75;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.font = "10px JetBrains Mono, monospace"; ctx.fillStyle = "#5d6a84";
+    for (let y = Y0; y <= Y1; y += 5) { const x = X((y - Y0) * 12); ctx.fillText(y, x - 13, H - 8); ctx.strokeStyle = "rgba(255,255,255,.04)"; ctx.beginPath(); ctx.moveTo(x, P.t); ctx.lineTo(x, H - P.b); ctx.stroke(); }
+    rec.forEach(([a,b]) => { ctx.fillStyle = "rgba(255,107,129,.12)"; const xa = X((a-Y0)*12), xb = X((b-Y0)*12); ctx.fillRect(xa, P.t, xb - xa, H - P.t - P.b); });
+    ctx.setLineDash([5,5]); ctx.strokeStyle = "rgba(255,196,107,.7)"; ctx.beginPath(); ctx.moveTo(P.l, Yv(TH)); ctx.lineTo(W - P.r, Yv(TH)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "#ffc46b"; ctx.fillText("alert", 4, Yv(TH) + 3);
+    const upto = Math.floor(anim * (N - 1));
+    const g = ctx.createLinearGradient(P.l, 0, W, 0); g.addColorStop(0, "#2fe0a5"); g.addColorStop(1, "#5b8cff");
+    const fg = ctx.createLinearGradient(0, P.t, 0, H); fg.addColorStop(0, "rgba(47,224,165,.22)"); fg.addColorStop(1, "rgba(47,224,165,0)");
+    ctx.beginPath(); for (let i = 0; i <= upto; i++) { const x = X(i), y = Yv(series[i]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+    ctx.lineTo(X(upto), H - P.b); ctx.lineTo(X(0), H - P.b); ctx.closePath(); ctx.fillStyle = fg; ctx.fill();
+    ctx.beginPath(); for (let i = 0; i <= upto; i++) { const x = X(i), y = Yv(series[i]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+    ctx.strokeStyle = g; ctx.lineWidth = 2.4; ctx.stroke();
+    for (let i = 1; i <= upto; i++) if (series[i-1] < TH && series[i] >= TH) { ctx.fillStyle = "#ffc46b"; ctx.beginPath(); ctx.arc(X(i), Yv(series[i]), 4, 0, 7); ctx.fill(); }
+    if (hover >= 0 && hover <= upto) {
+      const x = X(hover), y = Yv(series[hover]);
+      ctx.strokeStyle = "rgba(255,255,255,.25)"; ctx.beginPath(); ctx.moveTo(x, P.t); ctx.lineTo(x, H - P.b); ctx.stroke();
+      ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(x, y, 4.5, 0, 7); ctx.fill();
+    }
+  }
+  function frame(){ anim = Math.min(1, anim + 0.012); draw(); if (anim < 1) requestAnimationFrame(frame); }
+  function months(i){ const t = Y0 + i/12; const y = Math.floor(t), m = Math.round((t - y) * 12); return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][Math.min(m,11)] + " " + y; }
+  const onPt = e => {
+    const r = cv.getBoundingClientRect(), x = e.clientX - r.left;
+    hover = Math.max(0, Math.min(N - 1, Math.round((x - P.l) / (W - P.l - P.r) * (N - 1))));
+    const v = series[hover], t = Y0 + hover/12, inRec = rec.some(([a,b]) => t >= a && t <= b);
+    tip.innerHTML = `<b>${months(hover)}</b><br>stress: <b style="color:${v>=TH?'#ffc46b':'#2fe0a5'}">${v.toFixed(2)}</b>${v>=TH?' · ALERT':''}${inRec?'<br><span style="color:#ff6b81">recession</span>':''}`;
+    tip.style.opacity = 1; tip.style.left = Math.min(x + 14, r.width - 150) + "px"; tip.style.top = (Yv(v) - 50) + "px"; draw();
+  };
+  cv.addEventListener("pointermove", onPt); cv.addEventListener("pointerdown", onPt);
+  cv.addEventListener("pointerleave", () => { hover = -1; tip.style.opacity = 0; draw(); });
+  document.querySelectorAll("#toggles .tg").forEach(b => b.onclick = () => {
+    const k = +b.dataset.s; if (on[k] && on.filter(Boolean).length === 1) return;
+    on[k] = on[k] ? 0 : 1; b.classList.toggle("on"); compute(); draw();
+  });
+  compute(); size();
+  const lio = new IntersectionObserver(es => { if (es[0].isIntersecting) { frame(); lio.disconnect(); } }, {threshold:.3});
+  lio.observe(cv);
+  addEventListener("resize", () => { size(); draw(); });
+})();
+
+/* ================= background candles ================= */
+(() => {
+  const cv = document.getElementById("bg"), ctx = cv.getContext("2d");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let W, H, d, candles = [], off = 0, last = 100;
+  const CW = 14;
+  function mk(){ const o = last, c = o + (Math.random() - .48) * 6, h = Math.max(o, c) + Math.random() * 3, l = Math.min(o, c) - Math.random() * 3; last = c; return {o, c, h, l}; }
+  function size(){ d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cv.style.width = W + "px"; cv.style.height = H + "px"; ctx.setTransform(d,0,0,d,0,0); candles = Array.from({length: Math.ceil(W / CW) + 2}, mk); }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle = "rgba(255,255,255,.022)"; ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 70) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 70) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    const vals = candles.flatMap(c => [c.h, c.l]), mn = Math.min(...vals), mx = Math.max(...vals);
+    const Y = v => H * .62 - (v - (mn + mx) / 2) / (mx - mn + 1) * H * .35;
+    off += 0.25; if (off >= CW) { off -= CW; candles.shift(); candles.push(mk()); }
+    candles.forEach((c, i) => {
+      const x = i * CW - off, up = c.c >= c.o;
+      ctx.strokeStyle = ctx.fillStyle = up ? "rgba(47,224,165,.13)" : "rgba(255,107,129,.11)";
+      ctx.beginPath(); ctx.moveTo(x + CW/2, Y(c.h)); ctx.lineTo(x + CW/2, Y(c.l)); ctx.stroke();
+      const y1 = Y(Math.max(c.o, c.c)), y2 = Y(Math.min(c.o, c.c)); ctx.fillRect(x + 3, y1, CW - 6, Math.max(1, y2 - y1));
+    });
+    requestAnimationFrame(draw);
+  }
+  addEventListener("resize", size); size(); draw();
+})();
+</script>
+</body>
+</html>
